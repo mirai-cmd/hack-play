@@ -1,6 +1,0 @@
-Meeting ID: 890 2587 9545
-Passcode: 762270
-
-https://github.com/flick-23/Full-Stack-Dev-Eyesec/invitations
-
-remove "git.enabled" : false from settings.json

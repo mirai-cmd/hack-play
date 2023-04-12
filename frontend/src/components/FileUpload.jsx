@@ -2,6 +2,23 @@ import React, { useState } from "react";
 import axios from "axios";
 export default function FileUpload() {
   const [file, setFile] = useState(null);
+  const [users, setUsers] = useState([]);
+  const handleClick = async () => {
+    try {
+      const res=await axios.get("http://localhost:5000/backend/users");
+      setUsers(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+  const handleDelete = async () => {
+    try {
+      const res=await axios.delete("http://localhost:5000/backend/uploads/9");
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (file) {
@@ -34,6 +51,25 @@ export default function FileUpload() {
           Upload
         </button>
       </form>
+      <button
+          type="submit"
+          className="uploadButton bg-black text-white p-3 rounded-[0.8rem] hover:bg-gray-500"
+          onClick={handleClick}
+        >
+          get users
+        </button>
+        <ul>
+          {users.map((user)=>{
+            return(<li key={user.user_id}>{user.username}</li>)
+          })}
+        </ul>
+        <button
+          type="submit"
+          className="uploadButton bg-black text-white p-3 rounded-[0.8rem] hover:bg-gray-500"
+          onClick={handleDelete}
+        >
+          Delete file
+        </button>
     </div>
   );
 }

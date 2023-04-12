@@ -9,8 +9,16 @@ const connection = mysql2.createPool({
 });
 if (connection) console.log("mysql in users");
 
+const getUsers=(req,res)=>{
+  connection.query(
+    "SELECT * FROM user_accounts",
+    function (err, results, fields) {
+      if(err) return res.status(500).json({"error":err})
+      return res.status(200).json(results);
+    })
+}
 const registerController = (req, res) => {
-  const { id, username, email, password } = req.body;
+  const { username, email, password } = req.body;
   if (!username || !password)
     return res
       .status(400)
@@ -22,7 +30,7 @@ const registerController = (req, res) => {
       if (results[0])
         return res.status(400).send("This username already exists");
       connection.query(
-        `INSERT INTO user_accounts VALUES(${id},"${username}","${email}","${password}")`,
+        `INSERT INTO user_accounts(username,email,password) VALUES("${username}","${email}","${password}")`,
         function (err, results, fields) {
           if (err) return res.status(500).send(err);
           return res.status(200).send("Registration successful");
@@ -50,3 +58,4 @@ const loginController = (req, res) => {
 };
 exports.registerController = registerController;
 exports.loginController = loginController;
+exports.getUsers = getUsers;
